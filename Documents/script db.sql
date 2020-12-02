@@ -29,7 +29,7 @@ CREATE TABLE Recette(
     TempsTotal NUMBER(10) NOT NULL,
     Coût VARCHAR2(45) NOT NULL,
     IdUtilisateur NUMBER(10) NOT NULL,
-    idImages NUMBER(10) NOT NULL,
+    idImages NUMBER(10),
     PRIMARY KEY (IdRecette),
     CONSTRAINT fk_Recette_Utilisateur
         FOREIGN KEY (idUtilisateur)
@@ -173,3 +173,18 @@ CREATE TRIGGER ajout_IDutilisateur BEFORE INSERT
  END 
  
 ----------- Script population des tables --------------
+INSERT INTO Utilisateur VALUES (1,'ChefCulinaire','chefculinaire@gmail.con','01/12/2020', 'test1');
+INSERT INTO Utilisateur VALUES (2,'LeCordonBleu','lecordonbleu@yahoo.fr','03/12/2020', 'test2');
+INSERT INTO Utilisateur VALUES (3,'Traiteur','traiteur@gmail.con','04/12/2020', 'test3');
+INSERT INTO Utilisateur VALUES (4,'Meticuleux','meticuleux@gmail.con','12/12/2020', 'test4');
+
+INSERT INTO Ingredient VALUES (1,'Oeuf');
+INSERT INTO Ingredient VALUES (2,'Farine');
+INSERT INTO Ingredient VALUES (3,'Beurre');
+INSERT INTO Ingredient VALUES (4,'Sucre');
+INSERT INTO Ingredient VALUES (5,'poudre de Cacao');
+INSERT INTO Ingredient VALUES (6,'Levure');
+INSERT INTO Ingredient VALUES (7,'Arome');
+
+INSERT INTO Recette VALUES (1,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 1, 1);
+INSERT INTO Recette VALUES (2,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 2, 0);
