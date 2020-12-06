@@ -212,7 +212,18 @@ INSERT INTO Recette VALUES (2,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 
 CREATE OR REPLACE PACKAGE PKG_Utilisateur
 
 -- Procédure de création d'un client ( vérification si email déjà prit )
-
+CREATE OR REPLACE PROCEDURE Create_Client
+    (IN_Pseudo VARCHAR2,IN_Email VARCHAR2,IN_DateInscription DATE,IN_passwords VARCHAR2, test OUT NUMBER) IS
+    BEGIN
+    -- On test si l'email n'existe pas dans la DB
+    IF NOT EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email) THEN
+        INSERT INTO Utilisateur(pseudo,email,DateInscription,passwords) 
+        VALUES (IN_Pseudo,IN_Email,IN_DateInscription,IN_passwords);
+        test := 0; -- On renvoie 0 pour dire que l'inscription c'est bien passé
+    ELSE 
+        test := 1; -- On renvoie 1 pour dire que l'inscription n'est pas possible car l'email est déjà prit
+    END IF;
+END;
 -- Procédure pour trouver un client selon Pseudo/mdp
 
 -- Procédure pour trouver un client selon Email/mdp
