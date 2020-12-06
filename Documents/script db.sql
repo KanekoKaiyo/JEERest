@@ -3,7 +3,7 @@ CREATE TABLE Utilisateur(
     IdUtilisateur NUMBER(10)NOT NULL,
     Pseudo VARCHAR2(45) NOT NULL,
     Email VARCHAR2(100) NOT NULL,
-    password VARCHAR2(100) NOT NULL,
+    passwords VARCHAR2(100) NOT NULL,
     DateInscription DATE NOT NULL,
     PRIMARY KEY (IdUtilisateur)
 );
@@ -30,6 +30,7 @@ CREATE TABLE Recette(
     Coût VARCHAR2(45) NOT NULL,
     IdUtilisateur NUMBER(10) NOT NULL,
     idImages NUMBER(10),
+    PRIMARY KEY (IdRecette),
     CONSTRAINT fk_Recette_Utilisateur
         FOREIGN KEY (idUtilisateur)
         REFERENCES Utilisateur(IdUtilisateur),
@@ -194,6 +195,17 @@ INSERT INTO Utilisateur VALUES (2,'LeCordonBleu','lecordonbleu@yahoo.fr','03/12/
 INSERT INTO Utilisateur VALUES (3,'Traiteur','traiteur@gmail.con','04/12/2020', 'test3');
 INSERT INTO Utilisateur VALUES (4,'Meticuleux','meticuleux@gmail.con','12/12/2020', 'test4');
 
+INSERT INTO Ingredient VALUES (1,'Oeuf');
+INSERT INTO Ingredient VALUES (2,'Farine');
+INSERT INTO Ingredient VALUES (3,'Beurre');
+INSERT INTO Ingredient VALUES (4,'Sucre');
+INSERT INTO Ingredient VALUES (5,'poudre de Cacao');
+INSERT INTO Ingredient VALUES (6,'Levure');
+INSERT INTO Ingredient VALUES (7,'Arome');
+
+INSERT INTO Recette VALUES (1,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 1, 1);
+INSERT INTO Recette VALUES (2,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 2, 0);
+
 --------- Script pour le programme ------------------
 
 -- Package qui va stocker toutes les procédures lié aux utilisateurs
@@ -279,13 +291,3 @@ CREATE OR REPLACE PACKAGE PKG_Recette
 
 -- Procédure pour supprimer une recette et les élements de celle ci  ( appel a d'autre procédure d'autre package )
 END PKG_Recette
-INSERT INTO Ingredient VALUES (1,'Oeuf');
-INSERT INTO Ingredient VALUES (2,'Farine');
-INSERT INTO Ingredient VALUES (3,'Beurre');
-INSERT INTO Ingredient VALUES (4,'Sucre');
-INSERT INTO Ingredient VALUES (5,'poudre de Cacao');
-INSERT INTO Ingredient VALUES (6,'Levure');
-INSERT INTO Ingredient VALUES (7,'Arome');
-
-INSERT INTO Recette VALUES (1,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 1, 1);
-INSERT INTO Recette VALUES (2,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 2, 0);
