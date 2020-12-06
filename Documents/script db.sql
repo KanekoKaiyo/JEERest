@@ -253,7 +253,7 @@ END;
 
 -- Procédure qui renvoie toutes les données du client pour la vision de son profil
 CREATE OR REPLACE PROCEDURE Find_Client
-    (IN_Email IN Utilisateur.email%TYPE) IS
+    (IN_Email IN Utilisateur.email%TYPE, OUT_mail OUT Utilisateur.email%TYPE, OUT_Pseudo OUT Utilisateur.pseudo%TYPE, OUT_Date OUT Utilisateur.DateInscription%TYPE) IS
 BEGIN
     IF EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email) THEN
 
