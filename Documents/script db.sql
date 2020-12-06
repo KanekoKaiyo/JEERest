@@ -213,7 +213,7 @@ CREATE OR REPLACE PACKAGE PKG_Utilisateur
 
 -- Procédure de création d'un client ( vérification si email déjà prit )
 CREATE OR REPLACE PROCEDURE Create_Client
-    (IN_Pseudo VARCHAR2,IN_Email VARCHAR2,IN_DateInscription DATE,IN_passwords VARCHAR2, test OUT NUMBER) IS
+    (IN_Pseudo IN Utilisateur.pseudo%TYPE,IN_Email IN Utilisateur.email%TYPE,IN_DateInscription IN Utilisateur.DateInscription%TYPE,IN_passwords IN Utilisateur.passwords%TYPE, test OUT NUMBER) IS
 BEGIN
     -- On test si l'email n'existe pas dans la DB
     IF NOT EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email) THEN
@@ -228,9 +228,9 @@ BEGIN
         WHEN OTHERS THEN test := 3;
 END;
 /
--- Procédure pour trouver un client selon Pseudo/mdp
+-- Procédure pour trouver un client selon Pseudo/mdp ( pour le login )
 CREATE OR REPLACE PROCEDURE Find_Client_Pseudo
-    (IN_Pseudo VARCHAR2, IN_passwords VARCHAR2, test OUT NUMBER) IS
+    (IN_Pseudo IN Utilisateur.pseudo%TYPE, IN_passwords IN Utilisateur.passwords%TYPE, test OUT NUMBER) IS
 BEGIN
     IF EXISTS(SELECT * FROM Utilisateur WHERE Pseudo = IN_Pseudo AND passwords = IN_passwords) THEN
         test := 0;
@@ -239,14 +239,26 @@ BEGIN
     END IF;
 END;
 /
--- Procédure pour trouver un client selon Email/mdp
+-- Procédure pour trouver un client selon Email/mdp ( pour le login )
 CREATE OR REPLACE PROCEDURE Find_Client_Email
-    (IN_Email VARCHAR2, IN_passwords VARCHAR2, test OUT NUMBER) IS
+    (IN_Email IN Utilisateur.email%TYPE, IN_passwords IN Utilisateur.passwords%TYPE, test OUT NUMBER) IS
 BEGIN
     IF EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email AND passwords = IN_passwords) THEN
         test := 0;
     ELSE
         test := 1;
+    END IF;
+END;
+/
+
+-- Procédure qui renvoie toutes les données du client pour la vision de son profil
+CREATE OR REPLACE PROCEDURE Find_Client
+    (IN_Email IN Utilisateur.email%TYPE) IS
+BEGIN
+    IF EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email) THEN
+
+    ELSE 
+
     END IF;
 END;
 /
