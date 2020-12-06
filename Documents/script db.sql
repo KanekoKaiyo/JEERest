@@ -214,7 +214,7 @@ CREATE OR REPLACE PACKAGE PKG_Utilisateur
 -- Procédure de création d'un client ( vérification si email déjà prit )
 CREATE OR REPLACE PROCEDURE Create_Client
     (IN_Pseudo VARCHAR2,IN_Email VARCHAR2,IN_DateInscription DATE,IN_passwords VARCHAR2, test OUT NUMBER) IS
-    BEGIN
+BEGIN
     -- On test si l'email n'existe pas dans la DB
     IF NOT EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email) THEN
         INSERT INTO Utilisateur(pseudo,email,DateInscription,passwords) 
@@ -223,11 +223,33 @@ CREATE OR REPLACE PROCEDURE Create_Client
     ELSE 
         test := 1; -- On renvoie 1 pour dire que l'inscription n'est pas possible car l'email est déjà prit
     END IF;
+    EXCEPTION 
+        WHEN VALUE_ERROR THEN test := 2;
+        WHEN OTHERS THEN test := 3;
 END;
+/
 -- Procédure pour trouver un client selon Pseudo/mdp
-
+CREATE OR REPLACE PROCEDURE Find_Client_Pseudo
+    (IN_Pseudo VARCHAR2, IN_passwords VARCHAR2, test OUT NUMBER) IS
+BEGIN
+    IF EXISTS(SELECT * FROM Utilisateur WHERE Pseudo = IN_Pseudo AND passwords = IN_passwords) THEN
+        test := 0;
+    ELSE
+        test := 1;
+    END IF;
+END;
+/
 -- Procédure pour trouver un client selon Email/mdp
-
+CREATE OR REPLACE PROCEDURE Find_Client_Email
+    (IN_Email VARCHAR2, IN_passwords VARCHAR2, test OUT NUMBER) IS
+BEGIN
+    IF EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email AND passwords = IN_passwords) THEN
+        test := 0;
+    ELSE
+        test := 1;
+    END IF;
+END;
+/
 -- Procédure pour modifier un client
 END PKG_Utilisateur
 
