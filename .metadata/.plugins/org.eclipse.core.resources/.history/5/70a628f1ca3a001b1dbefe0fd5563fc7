@@ -1,0 +1,5 @@
+package be.ngusim.servlet;
+
+public class Inscription extends HttpServlet{
+
+}
