@@ -228,6 +228,34 @@ BEGIN
         WHEN OTHERS THEN test := 3;
 END;
 /
+--------------------------------------------------------------------------
+-- Fonction de création d'un client ( vérification si email déjà prit ) --
+--------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION Create_Client
+    (
+        IN_Pseudo IN Utilisateur.pseudo%TYPE,
+        IN_Email IN Utilisateur.email%TYPE,
+        IN_DateInscription IN Utilisateur.DateInscription%TYPE,
+        IN_passwords IN Utilisateur.passwords%TYPE
+    ) RETURN NUMBER
+    IS 
+        OUT_Value NUMBER
+    BEGIN
+        -- On test si l'email n'existe pas dans la DB
+        IF NOT EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email) THEN
+        INSERT INTO Utilisateur(pseudo,email,DateInscription,passwords) 
+        VALUES (IN_Pseudo,IN_Email,IN_DateInscription,IN_passwords);
+        OUT_Value := 0; -- On renvoie 0 pour dire que l'inscription c'est bien passé
+    ELSE 
+        OUT_Value := 1; -- On renvoie 1 pour dire que l'inscription n'est pas possible car l'email est déjà prit
+    END IF;
+    EXCEPTION 
+        WHEN VALUE_ERROR THEN OUT_Value := 2;
+        WHEN OTHERS THEN OUT_Value := 3;
+    END;
+    return (OUT_Value);
+END;
+/
 -- Procédure pour trouver un client selon Pseudo/mdp ( pour le login )
 CREATE OR REPLACE PROCEDURE Find_Client_Pseudo
     (IN_Pseudo IN Utilisateur.pseudo%TYPE, IN_passwords IN Utilisateur.passwords%TYPE, test OUT NUMBER) IS
@@ -238,6 +266,25 @@ BEGIN
         test := 1;
     END IF;
 END;
+/
+------------------------------------------------------------------
+-- Fonction pour trouver un client pseudo/mdp ( pour le login ) --
+------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION Find_Client_Pseudo
+    (
+        IN_Pseudo IN Utilisateur.pseudo%TYPE,
+        IN_passwords IN Utilisateur.passwords%TYPE
+    ) RETURN NUMBER
+    IS
+        OUT_Value NUMBER
+    BEGIN
+        IF EXISTS(SELECT * FROM Utilisateur WHERE Pseudo = IN_Pseudo AND passwords = IN_passwords) THEN
+            OUT_Value := 0;
+        ELSE
+         OUT_Value := 1;
+        END IF;
+        return (OUT_Value);
+    END;
 /
 -- Procédure pour trouver un client selon Email/mdp ( pour le login )
 CREATE OR REPLACE PROCEDURE Find_Client_Email
@@ -250,7 +297,25 @@ BEGIN
     END IF;
 END;
 /
-
+------------------------------------------------------------------
+-- Fonction pour trouver un client pseudo/mdp ( pour le login ) --
+------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION Find_Client_Email
+    (
+        IN_Email IN Utilisateur.email%TYPE,
+        IN_passwords IN Utilisateur.passwords%TYPE
+    ) RETURN NUMBER
+    IS
+        OUT_Value NUMBER
+    BEGIN
+        IF EXISTS(SELECT * FROM Utilisateur WHERE Email = IN_Email AND passwords = IN_passwords) THEN
+            OUT_Value := 0;
+        ELSE
+         OUT_Value := 1;
+        END IF;
+        return (OUT_Value);
+    END;
+/
 -- Procédure qui renvoie toutes les données du client pour la vision de son profil
 CREATE OR REPLACE PROCEDURE Find_Client
     (IN_Email IN Utilisateur.email%TYPE, OUT_mail OUT Utilisateur.email%TYPE, OUT_Pseudo OUT Utilisateur.pseudo%TYPE, OUT_Date OUT Utilisateur.DateInscription%TYPE) IS
