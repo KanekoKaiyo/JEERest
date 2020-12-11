@@ -27,7 +27,7 @@ CREATE TABLE Recette(
     TempsCuisson NUMBER(10) NOT NULL,
     TempsPrearation NUMBER(10) NOT NULL,
     TempsTotal NUMBER(10) NOT NULL,
-    Coût VARCHAR2(45) NOT NULL,
+    Cout VARCHAR2(45) NOT NULL,
     IdUtilisateur NUMBER(10) NOT NULL,
     idImages NUMBER(10),
     PRIMARY KEY (IdRecette),
@@ -35,13 +35,13 @@ CREATE TABLE Recette(
         FOREIGN KEY (idUtilisateur)
         REFERENCES Utilisateur(IdUtilisateur),
     CONSTRAINT fk_Recette_Image
-        FOREIGN KEY (idImage)
+        FOREIGN KEY (idImages)
         REFERENCES Images(IdImages)
 );
 
 CREATE TABLE Commentaire(
     IdCommentaire NUMBER(10) NOT NULL,
-    Messages VARCHAR2(5000) NOT NULL,
+    Messages VARCHAR2(4000) NOT NULL,
     DateHeureCommentaire DATE NOT NULL,
     IdRecette NUMBER(10) NOT NULL,
     IdUtilisateur NUMBER(10)NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE Commentaire(
 CREATE TABLE Etape(
     idEtape NUMBER(10) NOT NULL,
     NumeroEtape NUMBER(10) NOT NULL,
-    DescriptionEtape VARCHAR2(5000) NOT NULL,
+    DescriptionEtape VARCHAR2(4000) NOT NULL,
     idRecette NUMBER(10) NOT NULL,
     PRIMARY KEY (idEtape),
     CONSTRAINT fk_Etape_Recette
@@ -67,7 +67,7 @@ CREATE TABLE Etape(
 
 CREATE TABLE IngredientRecette(
     idIngredientRecette NUMBER(10) NOT NULL,
-    Quantité float(10) NOT NULL,
+    Quantite float(10) NOT NULL,
     Mesure VARCHAR2(30) NOT NULL,
     idRecette NUMBER(10) NOT NULL,
     idIngredient NUMBER(10)NOT NULL,
@@ -81,33 +81,102 @@ CREATE TABLE IngredientRecette(
 );
 
 ------------ Script gestion ID -----------------
-
--- Version trouvé sur le net : 
+-- On crée la séquence
 CREATE SEQUENCE Utilisateur_seq 
 START WITH 1
 INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER Utilisateur_id
-BEFORE INSERT ON Utilisateur
-FOR EACH ROW
-
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IDutilisateur
+  BEFORE INSERT ON Utilisateur
+  FOR EACH ROW
 BEGIN
-    :NEW.idUtilisateur := Utilisateur_seq.nextval;
+  SELECT Utilisateur_seq .nextval
+  INTO :new.idUtilisateur
+  FROM dual;
 END;
-/
-
--- Version Prof :
-CREATE OR REPLACE TRIGGER Utilisateur_id
-BEFORE INSERT ON Utilisateur
-FOR EACH ROW 
+-- On crée la séquence
+CREATE SEQUENCE Ingredient_seq 
+START WITH 1
+INCREMENT BY 1;
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IdIngredient
+  BEFORE INSERT ON Ingredient
+  FOR EACH ROW
 BEGIN
-    DECLARE idIncremente INT;
-    IF (NEW.idUtilisateur IS NULL) THEN
-    SET idIncremente = (SELECT MAX(idUtilisateur)+1 FROM Utilisateur);
-    SET NEW.idUtilisateur = idIncremente;
-    END IF
+  SELECT Ingredient_seq.nextval
+  INTO :new.IdIngredient
+  FROM dual;
 END;
-/
+
+-- On crée la séquence
+CREATE SEQUENCE Images_seq 
+START WITH 1
+INCREMENT BY 1;
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IdImages
+  BEFORE INSERT ON Images
+  FOR EACH ROW
+BEGIN
+  SELECT Images_seq.nextval
+  INTO :new.IdImages
+  FROM dual;
+END;
+
+-- On crée la séquence
+CREATE SEQUENCE Recette_seq 
+START WITH 1
+INCREMENT BY 1;
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IdRecette
+  BEFORE INSERT ON Recette
+  FOR EACH ROW
+BEGIN
+  SELECT Recette_seq.nextval
+  INTO :new.IdRecette
+  FROM dual;
+END;
+
+-- On crée la séquence
+CREATE SEQUENCE Commentaire_seq 
+START WITH 1
+INCREMENT BY 1;
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IdCommentaire
+  BEFORE INSERT ON Recette
+  FOR EACH ROW
+BEGIN
+  SELECT Commentaire_seq.nextval
+  INTO :new.IdCommentaire
+  FROM dual;
+END;
+
+-- On crée la séquence
+CREATE SEQUENCE Etape_seq 
+START WITH 1
+INCREMENT BY 1;
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IdEtape
+  BEFORE INSERT ON Recette
+  FOR EACH ROW
+BEGIN
+  SELECT Etape_seq.nextval
+  INTO :new.IdEtape
+  FROM dual;
+END;
+
+-- On crée la séquence
+CREATE SEQUENCE IngredientRecette_seq 
+START WITH 1
+INCREMENT BY 1;
+-- On crée le trigger
+CREATE OR REPLACE TRIGGER ajout_IdIngredientRecette
+  BEFORE INSERT ON Recette
+  FOR EACH ROW
+BEGIN
+  SELECT IngredientRecette_seq.nextval
+  INTO :new.IdIngredientRecette
+  FROM dual;
+END;
 /********************* ajout id autoincrement **************************/
 CREATE TRIGGER ajout_IDutilisateur BEFORE INSERT
  ON Utilisateur 
