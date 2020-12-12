@@ -80,6 +80,7 @@ CREATE TABLE IngredientRecette(
         REFERENCES Recette(IdRecette)
 );
 
+-----------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////---------------------
 ------------ Script gestion ID -----------------
 -- On crée la séquence
 CREATE SEQUENCE Utilisateur_seq 
@@ -177,87 +178,9 @@ BEGIN
   INTO :new.IdIngredientRecette
   FROM dual;
 END;
-/********************* ajout id autoincrement **************************/
-CREATE TRIGGER ajout_IDutilisateur BEFORE INSERT
- ON Utilisateur 
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.idUtilisateur IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(idUtilisateur)+1 FROM Utilisateur ) ;
-		SET NEW.idUtilisateur = IdIncremente ;
-	END IF;
- END 
- 
- 
- CREATE TRIGGER ajout_IdIngredient BEFORE INSERT
- ON Ingredient 
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.IdIngredient IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(IdIngredient)+1 FROM Ingredient ) ;
-		SET NEW.IdIngredient = IdIncremente ;
-	END IF;
- END 
- 
- CREATE TRIGGER ajout_IdImages BEFORE INSERT
- ON Images
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.IdImages IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(IdImages)+1 FROM Images ) ;
-		SET NEW.IdImages = IdIncremente ;
-	END IF;
- END 
- 
- CREATE TRIGGER ajout_IdRecette BEFORE INSERT
- ON Recette
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.IdRecette IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(IdRecette)+1 FROM Recette ) ;
-		SET NEW.IdRecette = IdIncremente ;
-	END IF;
- END 
- 
- 
- CREATE TRIGGER ajout_IdCommentaire BEFORE INSERT
- ON Commentaire
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.IdCommentaire IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(IdCommentaire)+1 FROM Commentaire ) ;
-		SET NEW.IdCommentaire = IdIncremente ;
-	END IF;
- END 
- 
- CREATE TRIGGER ajout_idEtape BEFORE INSERT
- ON Etape
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.idEtape IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(idEtape)+1 FROM Etape ) ;
-		SET NEW.idEtape = IdIncremente ;
-	END IF;
- END 
- 
 
- CREATE TRIGGER ajout_idIngredientRecette BEFORE INSERT
- ON IngredientRecette
- FOR EACH ROW
- BEGIN
-	DECLARE IdIncremente int;
-	IF (NEW.idIngredientRecette IS NULL) THEN
-		SET IdIncremente = (SELECT MAX(idIngredientRecette)+1 FROM IngredientRecette ) ;
-		SET NEW.idIngredientRecette = IdIncremente ;
-	END IF;
- END 
- 
+
+-----------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--------------------
 ----------- Script population des tables --------------
 
 INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('ChefCulinaire','chefculinaire@gmail.con', 'test1','01/12/2020');
@@ -314,6 +237,34 @@ INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (
 INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (1,'sachet de 8g',2, 26);
 INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (2,'sachet de 30g', 2, 25);
 
+-----------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--------------------
+----------------------------pour consulter la table user de facon ordonner à adapter pour les autres.---------------------------
+Declare
+TYPE T_REC_Utilisateur IS RECORD (
+OUT_id Utilisateur.IdUtilisateur%TYPE,
+OUT_Pseudo Utilisateur.Pseudo%TYPE,
+OUT_Email Utilisateur.Email%TYPE,
+OUT_passwords Utilisateur.passwords%TYPE,
+OUT_DateInscription Utilisateur.DateInscription%TYPE);
+TYPE TAB_T_REC_Utilisateur IS TABLE OF T_REC_Utilisateur index by binary_integer ;
+t_rec TAB_T_REC_Utilisateur ;
+i Utilisateur.IdUtilisateur%TYPE := 0;
+BEGIN
+ for cc in (SELECT IdUtilisateur,Pseudo,Email,passwords,DateInscription FROM Utilisateur) LOOP
+i := i+1;
+t_rec(i).OUT_id := cc.IdUtilisateur;
+t_rec(i).OUT_Pseudo := cc.Pseudo;
+t_rec(i).OUT_Email := cc.Email;
+t_rec(i).OUT_passwords := cc.passwords;
+t_rec(i).OUT_DateInscription := cc.DateInscription;
+END LOOP;
+for i IN t_rec.first..t_rec.last loop
+    DBMS_OUTPUT.PUT_LINE('IdUtilisateur: '||t_rec(i).OUT_id||'  pseudo: '||t_rec(i).OUT_Pseudo||'  email: '||t_rec(i).OUT_Email||'  passwords: '||t_rec(i).OUT_passwords||'  DateInscription:  '||t_rec(i).OUT_DateInscription) ;
+   END LOOP;
+END;
+
+
+-----------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--------------------
 
 --------- Script pour le programme ------------------
 
