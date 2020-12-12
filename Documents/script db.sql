@@ -259,21 +259,61 @@ CREATE TRIGGER ajout_IDutilisateur BEFORE INSERT
  END 
  
 ----------- Script population des tables --------------
-INSERT INTO Utilisateur VALUES (1,'ChefCulinaire','chefculinaire@gmail.con','01/12/2020', 'test1');
-INSERT INTO Utilisateur VALUES (2,'LeCordonBleu','lecordonbleu@yahoo.fr','03/12/2020', 'test2');
-INSERT INTO Utilisateur VALUES (3,'Traiteur','traiteur@gmail.con','04/12/2020', 'test3');
-INSERT INTO Utilisateur VALUES (4,'Meticuleux','meticuleux@gmail.con','12/12/2020', 'test4');
 
-INSERT INTO Ingredient VALUES (1,'Oeuf');
-INSERT INTO Ingredient VALUES (2,'Farine');
-INSERT INTO Ingredient VALUES (3,'Beurre');
-INSERT INTO Ingredient VALUES (4,'Sucre');
-INSERT INTO Ingredient VALUES (5,'poudre de Cacao');
-INSERT INTO Ingredient VALUES (6,'Levure');
-INSERT INTO Ingredient VALUES (7,'Arome');
+INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('ChefCulinaire','chefculinaire@gmail.con', 'test1','01/12/2020');
+INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('LeCordonBleu','lecordonbleu@yahoo.fr','test2','03/12/2020');
+INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('Traiteur','traiteur@gmail.con', 'test3','04/12/2020');
+INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('Meticuleux','meticuleux@gmail.con', 'test4','12-12-2020');
 
-INSERT INTO Recette VALUES (1,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 1, 1);
-INSERT INTO Recette VALUES (2,'Cake', 'Dessert', '30', '15', '45', 'Abordable', 2, 0);
+INSERT INTO Ingredient(NomIngredient) VALUES ('Oeuf');
+INSERT INTO Ingredient(NomIngredient) VALUES ('Farine');
+INSERT INTO Ingredient(NomIngredient) VALUES ('Beurre');
+INSERT INTO Ingredient(NomIngredient) VALUES ('Sucre');
+INSERT INTO Ingredient(NomIngredient) VALUES ('poudre de Cacao');
+INSERT INTO Ingredient(NomIngredient) VALUES ('Levure');
+INSERT INTO Ingredient(NomIngredient) VALUES ('Arome');
+
+INSERT INTO Images(UrlImages) VALUES ('C:\SGBD5images\cake.jpg');
+INSERT INTO Images(UrlImages) VALUES ('C:\SGBD5images\omelette.jpg');
+
+INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur,IdImages) VALUES ('Cake nature', 'Dessert', '30', '15', '45', 'Abordable', 21,1);
+INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur) VALUES ('Cake nature', 'Dessert', '30', '15', '45', 'Abordable', 21);
+INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur) VALUES ('Cake yahourt', 'Dessert', '30', '15', '45', 'Abordable', 22);
+INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur,IdImages) VALUES ('omelette', 'Dessert', '5', '3', '8', 'Abordable', 24, 2);
+
+INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('Merci pour la superbe recette j ai reussit des le premier essai il est delicieux j ai adoree', '14-12-2020', 2,24);
+INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('delicieux et facile … faire. merci … toi chefculinaire', '14-12-2020', 2,23);
+INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('chefculinaire j adore tes fabuleuse recettes', '14-12-2020', 2,22);
+INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('Merci pour la superbe omelette recette j ai reussit des le premier essai il est delicieux j ai adoree', '14-12-2020', 5,21);
+INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('omelette delicieux et facile faire surtout rapide', '14-12-2020', 5,23);
+INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('omelette superbe j adore tes fabuleuse recettes', '14-12-2020', 5,22);
+
+
+
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (1,'faire fondre du beurre', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (2,'casser les omelette dans un saladier, ajouter une pinser de sel et du sucre', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (3,'rajouter du beurre fondu reffroidi', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (4,'mellanger energiquement avec un bateur pendant 2 minutes', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (5,'tamisser la farine decu et melanger energiquement jusqua optention d une pate homogene', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (6,'diviser la pate en 2 et ajouter la poudre de cacao dans une partie et melanger delicatement', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (7,'verser dans un moule a cake la parti sans cacao ensuite la partie avec cacao et placer dans le four a 130 decre', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (8,'sortir du four apès 30 minutes', 2);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (1,'emincer oignon, pecil et aille, tomate et poivrons', 5);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (2,'casser les oeufs dans un saladier, ajouter les condument emincer et une pincer de sel', 5);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (3,'mettre la poelle sur le four et laisser chauffer', 5);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (4,'rajouter de l huile dans la poelle', 5);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (5,'melanger les oeufs et les conduments durant 30 secondes', 5);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (6,'verser les omelette dans la poelle et mettre un feu dou', 5);
+INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (6,'apres une minute retourner les omelette afin de faire cuire le dessus. apres 1 autre minute server dans un plat. avec pour complement pain, excelent pour les tartines', 5);
+
+
+INSERT INTO IngredientRecette(Quantite,Mesure,idRecette, idIngredient) VALUES (4,null,2,21);
+INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (0,'300g',2,23);
+INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (0,'250g',2,22);
+INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (0,'200g',2,24);
+INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (1,'sachet de 8g',2, 26);
+INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (2,'sachet de 30g', 2, 25);
+
 
 --------- Script pour le programme ------------------
 
