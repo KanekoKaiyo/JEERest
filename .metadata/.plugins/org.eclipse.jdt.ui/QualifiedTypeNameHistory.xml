@@ -7,7 +7,6 @@
     <fullyQualifiedTypeName name="be.ngusim.javabean.Ingredient"/>
     <fullyQualifiedTypeName name="be.ngusim.javabean.Recette"/>
     <fullyQualifiedTypeName name="be.ngusim.javabean.Utilisateur"/>
-    <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="java.io.Serializable"/>
     <fullyQualifiedTypeName name="javax.servlet.ServletException"/>
     <fullyQualifiedTypeName name="javax.servlet.ServletConfig"/>
@@ -15,4 +14,9 @@
     <fullyQualifiedTypeName name="javax.servlet.http.HttpServletResponse"/>
     <fullyQualifiedTypeName name="java.io.IOException"/>
     <fullyQualifiedTypeName name="javax.servlet.annotation.WebServlet"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="be.ngusim.dao.ConnectDB"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
 </qualifiedTypeNameHistroy>
