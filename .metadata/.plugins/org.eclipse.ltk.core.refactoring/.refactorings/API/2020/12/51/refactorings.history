@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move package &apos;be.ngusim.API&apos; to &apos;JEE/src&apos;&#x0D;&#x0A;- Original project: &apos;API&apos;&#x0D;&#x0A;- Destination element: &apos;JEE/src&apos;&#x0D;&#x0A;- Original element: &apos;API/src/be.ngusim.API&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move package" destination="=JEE/src" element1="/src=/optional=/true=/=/maven.pomderived=/true=/&lt;be.ngusim.API" flags="589830" fragments="1" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1608027306289" version="1.0"/>
+</session>

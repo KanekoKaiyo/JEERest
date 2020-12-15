@@ -1,8 +1,15 @@
 package be.ngusim.dao;
 
+import java.sql.Connection;
+
 import be.ngusim.javabean.Etape;
 
 public class DAOEtape extends DAO<Etape>{
+
+	public DAOEtape(Connection conn) {
+		super(conn);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public boolean create(Etape obj) {

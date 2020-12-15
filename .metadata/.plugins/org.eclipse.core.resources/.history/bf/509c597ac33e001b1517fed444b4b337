@@ -1,0 +1,19 @@
+package be.ngusim.javabean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Recette {
+
+	private String titre;
+	private String categorie;
+	private String difficulte;
+	private int tempsCuisson;
+	private int tempsPreparation;
+	private int tempsTotal;
+	private double cout;
+	private Image image;
+	private List<Etape> etapes = new ArrayList<Etape>();
+	private List<Ingredient> ingredients = new ArrayList<Ingredient>();	
+	private List<Commentaire> commentaires = new ArrayList<Commentaire>();
+}

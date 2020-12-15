@@ -1,0 +1,13 @@
+package be.ngusim.javabean;
+
+public class Recette {
+
+	private String titre;
+	private String categorie;
+	private String difficulte;
+	private int tempsCuisson;
+	private int tempsPreparation;
+	private int tempsTotal;
+	private double cout;
+	private List<Commentaire> = new ArrayList<Commentaire>();
+}

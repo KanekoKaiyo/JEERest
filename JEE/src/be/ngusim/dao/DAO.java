@@ -1,9 +1,14 @@
 package be.ngusim.dao;
 
+import java.sql.Connection;
+
 public abstract class DAO<T> {
 	
-	protected static String baseUrl = "";
-	public DAO(){}
+	protected Connection connect = null;
+	
+	public DAO(Connection conn){
+		this.connect = conn;
+	}
 	public abstract boolean create(T obj);
 	public abstract boolean delete(T obj);
 	public abstract boolean update(T obj);

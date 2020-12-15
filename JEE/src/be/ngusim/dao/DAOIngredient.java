@@ -1,8 +1,15 @@
 package be.ngusim.dao;
 
+import java.sql.Connection;
+
 import be.ngusim.javabean.Ingredient;
 
 public class DAOIngredient extends DAO<Ingredient>{
+
+	public DAOIngredient(Connection conn) {
+		super(conn);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public boolean create(Ingredient obj) {

@@ -1,8 +1,15 @@
 package be.ngusim.dao;
 
+import java.sql.Connection;
+
 import be.ngusim.javabean.Recette;
 
 public class DAORecette extends DAO<Recette> {
+
+	public DAORecette(Connection conn) {
+		super(conn);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public boolean create(Recette obj) {

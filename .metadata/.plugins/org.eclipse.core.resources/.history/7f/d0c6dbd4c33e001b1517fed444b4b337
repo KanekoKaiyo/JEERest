@@ -1,0 +1,5 @@
+package be.ngusim.util;
+
+public class SHA {
+
+}

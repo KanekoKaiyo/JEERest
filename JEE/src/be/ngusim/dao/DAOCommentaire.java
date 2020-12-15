@@ -1,8 +1,15 @@
 package be.ngusim.dao;
 
+import java.sql.Connection;
+
 import be.ngusim.javabean.Commentaire;
 
 public class DAOCommentaire extends DAO<Commentaire>{
+
+	public DAOCommentaire(Connection conn) {
+		super(conn);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public boolean create(Commentaire obj) {

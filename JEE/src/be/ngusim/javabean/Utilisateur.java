@@ -36,8 +36,7 @@ public class Utilisateur implements Serializable{
 		this.dateInscription = dateInscription;
 	}
 	// Constructor
-	public Utilisateur() {
-	}
+	public Utilisateur() {}
 	public Utilisateur(String pseudo, String email, String motDePasse, Date dateInscription) {
 		this.pseudo = pseudo;
 		this.email = email;
