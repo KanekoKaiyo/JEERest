@@ -32,7 +32,7 @@ public class RecetteAPI {
 	 * TODO Methode pour recuperer une liste de recette avec une liste(ou tableau) de parametre ( une liste d'ingredient ) 
 	 */
 	// Get by filter
-	@Path("/...")
+	@Path("...")
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -40,7 +40,7 @@ public class RecetteAPI {
 		return null;
 	}
 	// Create
-	@Path("/add")
+	@Path("add")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response add() {

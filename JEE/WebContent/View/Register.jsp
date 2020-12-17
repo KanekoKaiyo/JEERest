@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Les recettes magiques !</title>
-<link rel="stylesheet" href="style.css">
+<title>Insert title here</title>
 </head>
 <body>
+
 </body>
 </html>
