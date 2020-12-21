@@ -1,269 +1,280 @@
 ------------ Création des tables ----------
-CREATE TABLE Utilisateur(
-    IdUtilisateur NUMBER(10)NOT NULL,
+CREATE TABLE UserF(
+    IdUserF NUMBER(10)NOT NULL,
     Pseudo VARCHAR2(45) NOT NULL,
     Email VARCHAR2(100) NOT NULL,
-    passwords VARCHAR2(100) NOT NULL,
+    password VARCHAR2(100) NOT NULL,
     DateInscription DATE NOT NULL,
-    PRIMARY KEY (IdUtilisateur)
+    PRIMARY KEY (IdUserF)
 );
 
-CREATE TABLE Ingredient(
-    IdIngredient NUMBER(10)NOT NULL,
-    NomIngredient VARCHAR2(100) NOT NULL,
-    PRIMARY KEY (IdIngredient)
+CREATE TABLE IngredientF(
+    IdIngredientF NUMBER(10)NOT NULL,
+    NameIngredientF VARCHAR2(100) NOT NULL,
+    PRIMARY KEY (IdIngredientF)
 );
 
-CREATE TABLE Images(
-    IdImages NUMBER(10)NOT NULL,
-    UrlImages VARCHAR2(200),
-    PRIMARY KEY (IdImages)
+CREATE TABLE ImagesF(
+    IdImagesF NUMBER(10)NOT NULL,
+    UrlImagesF VARCHAR2(200),
+    PRIMARY KEY (IdImagesF)
 );
 
-CREATE TABLE Recette(
-    IdRecette NUMBER(10) NOT NULL,
-    Titre VARCHAR2(45) NOT NULL,
-    Categorie VARCHAR2(45) NOT NULL,
-    TempsCuisson NUMBER(10) NOT NULL,
-    TempsPrearation NUMBER(10) NOT NULL,
-    TempsTotal NUMBER(10) NOT NULL,
-    Cout VARCHAR2(45) NOT NULL,
-    IdUtilisateur NUMBER(10) NOT NULL,
-    idImages NUMBER(10),
-    PRIMARY KEY (IdRecette),
-    CONSTRAINT fk_Recette_Utilisateur
-        FOREIGN KEY (idUtilisateur)
-        REFERENCES Utilisateur(IdUtilisateur),
-    CONSTRAINT fk_Recette_Image
-        FOREIGN KEY (idImages)
-        REFERENCES Images(IdImages)
+CREATE TABLE RecipeF(
+    IdRecipeF NUMBER(10) NOT NULL,
+    Title VARCHAR2(45) NOT NULL,
+    Category VARCHAR2(45) NOT NULL,
+    TimeCooking NUMBER(10) NOT NULL,
+    TimePreparation NUMBER(10) NOT NULL,
+    TotalTime NUMBER(10) NOT NULL,
+    Cost VARCHAR2(45) NOT NULL,
+    IdUserF NUMBER(10) NOT NULL,
+    idImagesF NUMBER(10),
+    PRIMARY KEY (IdRecipeF),
+    CONSTRAINT fk_RecipeF_UserF
+        FOREIGN KEY (idUserF)
+        REFERENCES UserF(IdUserF),
+    CONSTRAINT fk_RecipeF_Image
+        FOREIGN KEY (idImagesF)
+        REFERENCES ImagesF(IdImagesF)
 );
 
-CREATE TABLE Commentaire(
-    IdCommentaire NUMBER(10) NOT NULL,
+CREATE TABLE CommentF(
+    IdCommentF NUMBER(10) NOT NULL,
     Messages VARCHAR2(4000) NOT NULL,
-    DateHeureCommentaire DATE NOT NULL,
-    IdRecette NUMBER(10) NOT NULL,
-    IdUtilisateur NUMBER(10)NOT NULL,
-    PRIMARY KEY(IdCommentaire),
-    CONSTRAINT fk_Commentaire_Recette
-        FOREIGN KEY(IdRecette)
-        REFERENCES Recette(IdRecette),
-    CONSTRAINT fk_Commentaire_Utilisateur
-        FOREIGN KEY(IdUtilisateur)
-        REFERENCES Utilisateur(IdUtilisateur)
+    DateTimeCommentF DATE NOT NULL,
+    IdRecipeF NUMBER(10) NOT NULL,
+    IdUserF NUMBER(10)NOT NULL,
+    PRIMARY KEY(IdCommentF),
+    CONSTRAINT fk_CommentF_RecipeF
+        FOREIGN KEY(IdRecipeF)
+        REFERENCES RecipeF(IdRecipeF),
+    CONSTRAINT fk_CommentF_UserF
+        FOREIGN KEY(IdUserF)
+        REFERENCES UserF(IdUserF)
 );
 
-CREATE TABLE Etape(
-    idEtape NUMBER(10) NOT NULL,
-    NumeroEtape NUMBER(10) NOT NULL,
-    DescriptionEtape VARCHAR2(4000) NOT NULL,
-    idRecette NUMBER(10) NOT NULL,
-    PRIMARY KEY (idEtape),
-    CONSTRAINT fk_Etape_Recette
-        FOREIGN KEY(idRecette)
-        REFERENCES Recette(IdRecette)
+CREATE TABLE StepF(
+    idStepF NUMBER(10) NOT NULL,
+    NumberStepF NUMBER(10) NOT NULL,
+    DescriptionStepF VARCHAR2(4000) NOT NULL,
+    idRecipeF NUMBER(10) NOT NULL,
+    PRIMARY KEY (idStepF),
+    CONSTRAINT fk_StepF_RecipeF
+        FOREIGN KEY(idRecipeF)
+        REFERENCES RecipeF(IdRecipeF)
 );
 
-CREATE TABLE IngredientRecette(
-    idIngredientRecette NUMBER(10) NOT NULL,
-    Quantite float(10) NOT NULL,
-    Mesure VARCHAR2(30) NOT NULL,
-    idRecette NUMBER(10) NOT NULL,
-    idIngredient NUMBER(10)NOT NULL,
-    PRIMARY KEY(idIngredientRecette),
-    CONSTRAINT fk_IngredientRecette_Ingredient
-        FOREIGN KEY(idIngredient)
-        REFERENCES Ingredient(IdIngredient),
-    CONSTRAINT fk_IngredientRecette_Recette
-        FOREIGN KEY(idRecette)
-        REFERENCES Recette(IdRecette)
+CREATE TABLE IngredientFRecipeF(
+    idIngredientFRecipeF NUMBER(10) NOT NULL,
+    Quantity float(10) NOT NULL,
+    Measure VARCHAR2(30) NOT NULL,
+    idRecipeF NUMBER(10) NOT NULL,
+    idIngredientF NUMBER(10)NOT NULL,
+    PRIMARY KEY(idIngredientFRecipeF),
+    CONSTRAINT fk_IngredientFRecipeF_IngredientF
+        FOREIGN KEY(idIngredientF)
+        REFERENCES IngredientF(IdIngredientF),
+    CONSTRAINT fk_IngredientFRecipeF_RecipeF
+        FOREIGN KEY(idRecipeF)
+        REFERENCES RecipeF(IdRecipeF)
 );
 
------------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////---------------------
------------- Script gestion ID -----------------
--- On crée la séquence
-CREATE SEQUENCE Utilisateur_seq 
+-- We create the sequence
+CREATE SEQUENCE UserF_seq 
 START WITH 1
 INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IDutilisateur
-  BEFORE INSERT ON Utilisateur
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IDUserF
+  BEFORE INSERT ON UserF
   FOR EACH ROW
 BEGIN
-  SELECT Utilisateur_seq .nextval
-  INTO :new.idUtilisateur
+  SELECT UserF_seq .nextval
+  INTO :new.idUserF
   FROM dual;
 END;
--- On crée la séquence
-CREATE SEQUENCE Ingredient_seq 
+-- We create the sequence
+CREATE SEQUENCE IngredientF_seq 
 START WITH 1
 INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IdIngredient
-  BEFORE INSERT ON Ingredient
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IdIngredientF
+  BEFORE INSERT ON IngredientF
   FOR EACH ROW
 BEGIN
-  SELECT Ingredient_seq.nextval
-  INTO :new.IdIngredient
-  FROM dual;
-END;
-
--- On crée la séquence
-CREATE SEQUENCE Images_seq 
-START WITH 1
-INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IdImages
-  BEFORE INSERT ON Images
-  FOR EACH ROW
-BEGIN
-  SELECT Images_seq.nextval
-  INTO :new.IdImages
+  SELECT IngredientF_seq.nextval
+  INTO :new.IdIngredientF
   FROM dual;
 END;
 
--- On crée la séquence
-CREATE SEQUENCE Recette_seq 
+-- We create the sequence
+CREATE SEQUENCE ImagesF_seq 
 START WITH 1
 INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IdRecette
-  BEFORE INSERT ON Recette
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IdImagesF
+  BEFORE INSERT ON ImagesF
   FOR EACH ROW
 BEGIN
-  SELECT Recette_seq.nextval
-  INTO :new.IdRecette
+  SELECT ImagesF_seq.nextval
+  INTO :new.IdImagesF
   FROM dual;
 END;
 
--- On crée la séquence
-CREATE SEQUENCE Commentaire_seq 
+-- We create the sequence
+CREATE SEQUENCE RecipeF_seq 
 START WITH 1
 INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IdCommentaire
-  BEFORE INSERT ON Recette
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IdRecipeF
+  BEFORE INSERT ON RecipeF
   FOR EACH ROW
 BEGIN
-  SELECT Commentaire_seq.nextval
-  INTO :new.IdCommentaire
+  SELECT RecipeF_seq.nextval
+  INTO :new.IdRecipeF
   FROM dual;
 END;
 
--- On crée la séquence
-CREATE SEQUENCE Etape_seq 
+-- We create the sequence
+CREATE SEQUENCE CommentF_seq 
 START WITH 1
 INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IdEtape
-  BEFORE INSERT ON Recette
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IdCommentF
+  BEFORE INSERT ON CommentF
   FOR EACH ROW
 BEGIN
-  SELECT Etape_seq.nextval
-  INTO :new.IdEtape
+  SELECT CommentF_seq.nextval
+  INTO :new.IdCommentF
   FROM dual;
 END;
 
--- On crée la séquence
-CREATE SEQUENCE IngredientRecette_seq 
+-- We create the sequence
+CREATE SEQUENCE StepF_seq 
 START WITH 1
 INCREMENT BY 1;
--- On crée le trigger
-CREATE OR REPLACE TRIGGER ajout_IdIngredientRecette
-  BEFORE INSERT ON Recette
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IdStepF
+  BEFORE INSERT ON StepF
   FOR EACH ROW
 BEGIN
-  SELECT IngredientRecette_seq.nextval
-  INTO :new.IdIngredientRecette
+  SELECT StepF_seq.nextval
+  INTO :new.IdStepF
   FROM dual;
 END;
 
+-- We create the sequence
+CREATE SEQUENCE IngredientFRecipeF_seq 
+START WITH 1
+INCREMENT BY 1;
+-- We create the trigger
+CREATE OR REPLACE TRIGGER add_IdIngredientFRecipeF
+  BEFORE INSERT ON IngredientFRecipeF
+  FOR EACH ROW
+BEGIN
+  SELECT IngredientFRecipeF_seq.nextval
+  INTO :new.IdIngredientFRecipeF
+  FROM dual;
+END;
+
+
+INSERT INTO UserF(Pseudo , Email, password, DateInscription) VALUES ('ChefCulinaire','chefculinaire@gmail.con', 'test1','01/12/2020');
+INSERT INTO UserF(Pseudo , Email, password, DateInscription) VALUES ('LeCordonBleu','lecordonbleu@yahoo.fr','test2','03/12/2020');
+INSERT INTO UserF(Pseudo , Email, password, DateInscription) VALUES ('Traiteur','traiteur@gmail.con', 'test3','04/12/2020');
+INSERT INTO UserF(Pseudo , Email, password, DateInscription) VALUES ('Meticuleux','meticuleux@gmail.con', 'test4','12-12-2020');
+
+INSERT INTO IngredientF(NameIngredientF) VALUES ('Oeuf');
+INSERT INTO IngredientF(NameIngredientF) VALUES ('Farine');
+INSERT INTO IngredientF(NameIngredientF) VALUES ('Beurre');
+INSERT INTO IngredientF(NameIngredientF) VALUES ('Sucre');
+INSERT INTO IngredientF(NameIngredientF) VALUES ('poudre de Cacao');
+INSERT INTO IngredientF(NameIngredientF) VALUES ('Levure');
+INSERT INTO IngredientF(NameIngredientF) VALUES ('Arome');
+
+INSERT INTO ImagesF(UrlImagesF) VALUES ('C:\SGBD5ImagesF\cake.jpg');
+INSERT INTO ImagesF(UrlImagesF) VALUES ('C:\SGBD5ImagesF\omelette.jpg');
+
+
+IdRecipeF NUMBER(10) NOT NULL,
+    Title VARCHAR2(45) NOT NULL,
+    Category VARCHAR2(45) NOT NULL,
+    TimeCooking NUMBER(10) NOT NULL,
+    TimePreparation NUMBER(10) NOT NULL,
+    TotalTime NUMBER(10) NOT NULL,
+    Cost VARCHAR2(45) NOT NULL,
+    IdUserF NUMBER(10) NOT NULL,
+    idImagesF NUMBER(10),
+    PRIMARY KEY (IdRecipeF),
+    CONSTRAINT fk_RecipeF_UserF
+        FOREIGN KEY (idUserF)
+        REFERENCES UserF(IdUserF),
+    CONSTRAINT fk_RecipeF_Image
+        FOREIGN KEY (idImagesF)
+        REFERENCES ImagesF(IdImagesF)
+
+INSERT INTO RecipeF(Title, Category, TimeCooking,TimePreparation,TotalTime,Cost,IdUserF,idImagesF) VALUES ('Cake nature', 'Dessert', '30', '15', '45', 'Abordable', 5,1);
+INSERT INTO RecipeF(Title, Category, TimeCooking,TimePreparation,TotalTime,Cost,IdUserF) VALUES ('Cake nature', 'Dessert', '30', '15', '45', 'Abordable', 6);
+INSERT INTO RecipeF(Title, Category, TimeCooking,TimePreparation,TotalTime,Cost,IdUserF) VALUES ('Cake yahourt', 'Dessert', '30', '15', '45', 'Abordable', 7);
+INSERT INTO RecipeF(Title, Category, TimeCooking,TimePreparation,TotalTime,Cost,IdUserF,idImagesF) VALUES ('omelette', 'Dessert', '5', '3', '8', 'Abordable', 8, 2);
+
+INSERT INTO CommentF(Messages,DateTimeCommentF, IdRecipeF,IdUserF) VALUES ('Merci pour la superbe RecipeF j ai reussit des le premier essai il est delicieux j ai adoree', '14-12-2020', 5,7);
+INSERT INTO CommentF(Messages,DateTimeCommentF, IdRecipeF,IdUserF) VALUES ('delicieux et facile … faire. merci … toi chefculinaire', '14-12-2020', 5,7);
+INSERT INTO CommentF(Messages,DateTimeCommentF, IdRecipeF,IdUserF) VALUES ('chefculinaire j adore tes fabuleuse RecipeFs', '14-12-2020', 7,8);
+INSERT INTO CommentF(Messages,DateTimeCommentF, IdRecipeF,IdUserF) VALUES ('Merci pour la superbe omelette RecipeF j ai reussit des le premier essai il est delicieux j ai adoree', '14-12-2020', 8,5);
+INSERT INTO CommentF(Messages,DateTimeCommentF, IdRecipeF,IdUserF) VALUES ('omelette delicieux et facile faire surtout rapide', '14-12-2020', 5,7);
+INSERT INTO CommentF(Messages,DateTimeCommentF, IdRecipeF,IdUserF) VALUES ('omelette superbe j adore tes fabuleuse RecipeFs', '14-12-2020', 5,8);
+
+
+
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (1,'faire fondre du beurre', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (2,'casser les omelette dans un saladier, adder une pinser de sel et du sucre', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (3,'radder du beurre fondu reffroidi', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (4,'mellanger energiquement avec un bateur pendant 2 minutes', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (5,'tamisser la farine decu et melanger energiquement jusqua optention d une pate homogene', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (6,'diviser la pate en 2 et adder la poudre de cacao dans une partie et melanger delicatement', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (7,'verser dans un moule a cake la parti sans cacao ensuite la partie avec cacao et placer dans le four a 130 decre', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (8,'sortir du four apès 30 minutes', 5);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (1,'emincer oignon, pecil et aille, tomate et poivrons', 8);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (2,'casser les oeufs dans un saladier, adder les condument emincer et une pincer de sel', 8);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (3,'mettre la poelle sur le four et laisser chauffer', 8);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (4,'radder de l huile dans la poelle', 8);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (5,'melanger les oeufs et les conduments durant 30 secondes', 8);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (6,'verser les omelette dans la poelle et mettre un feu dou', 8);
+INSERT INTO StepF(NumberStepF, DescriptionStepF, idRecipeF) VALUES (6,'apres une minute retourner les omelette afin de faire cuire le dessus. apres 1 autre minute server dans un plat. avec pour complement pain, excelent pour les tartines', 8);
+
+
+INSERT INTO IngredientFRecipeF(Quantity,Measure,idRecipeF, idIngredientF) VALUES (4,null,5,1);
+INSERT INTO IngredientFRecipeF(Quantity,Measure ,idRecipeF, idIngredientF) VALUES (0,'300g',5,3);
+INSERT INTO IngredientFRecipeF(Quantity,Measure ,idRecipeF, idIngredientF) VALUES (0,'250g',5,2);
+INSERT INTO IngredientFRecipeF(Quantity,Measure ,idRecipeF, idIngredientF) VALUES (0,'200g',5,4);
+INSERT INTO IngredientFRecipeF(Quantity,Measure ,idRecipeF, idIngredientF) VALUES (1,'sachet de 8g',5, 6);
+INSERT INTO IngredientFRecipeF(Quantity,Measure ,idRecipeF, idIngredientF) VALUES (2,'sachet de 30g', 5, 5);
 
 -----------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--------------------
------------ Script population des tables --------------
-
-INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('ChefCulinaire','chefculinaire@gmail.con', 'test1','01/12/2020');
-INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('LeCordonBleu','lecordonbleu@yahoo.fr','test2','03/12/2020');
-INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('Traiteur','traiteur@gmail.con', 'test3','04/12/2020');
-INSERT INTO Utilisateur(Pseudo , Email, passwords, DateInscription) VALUES ('Meticuleux','meticuleux@gmail.con', 'test4','12-12-2020');
-
-INSERT INTO Ingredient(NomIngredient) VALUES ('Oeuf');
-INSERT INTO Ingredient(NomIngredient) VALUES ('Farine');
-INSERT INTO Ingredient(NomIngredient) VALUES ('Beurre');
-INSERT INTO Ingredient(NomIngredient) VALUES ('Sucre');
-INSERT INTO Ingredient(NomIngredient) VALUES ('poudre de Cacao');
-INSERT INTO Ingredient(NomIngredient) VALUES ('Levure');
-INSERT INTO Ingredient(NomIngredient) VALUES ('Arome');
-
-INSERT INTO Images(UrlImages) VALUES ('C:\SGBD5images\cake.jpg');
-INSERT INTO Images(UrlImages) VALUES ('C:\SGBD5images\omelette.jpg');
-
-INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur,IdImages) VALUES ('Cake nature', 'Dessert', '30', '15', '45', 'Abordable', 21,1);
-INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur) VALUES ('Cake nature', 'Dessert', '30', '15', '45', 'Abordable', 21);
-INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur) VALUES ('Cake yahourt', 'Dessert', '30', '15', '45', 'Abordable', 22);
-INSERT INTO Recette(Titre, Categorie, TempsCuisson,TempsPrearation,TempsTotal,Cout,IdUtilisateur,IdImages) VALUES ('omelette', 'Dessert', '5', '3', '8', 'Abordable', 24, 2);
-
-INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('Merci pour la superbe recette j ai reussit des le premier essai il est delicieux j ai adoree', '14-12-2020', 2,24);
-INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('delicieux et facile … faire. merci … toi chefculinaire', '14-12-2020', 2,23);
-INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('chefculinaire j adore tes fabuleuse recettes', '14-12-2020', 2,22);
-INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('Merci pour la superbe omelette recette j ai reussit des le premier essai il est delicieux j ai adoree', '14-12-2020', 5,21);
-INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('omelette delicieux et facile faire surtout rapide', '14-12-2020', 5,23);
-INSERT INTO Commentaire(Messages,DateHeureCommentaire, IdRecette,IdUtilisateur) VALUES ('omelette superbe j adore tes fabuleuse recettes', '14-12-2020', 5,22);
-
-
-
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (1,'faire fondre du beurre', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (2,'casser les omelette dans un saladier, ajouter une pinser de sel et du sucre', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (3,'rajouter du beurre fondu reffroidi', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (4,'mellanger energiquement avec un bateur pendant 2 minutes', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (5,'tamisser la farine decu et melanger energiquement jusqua optention d une pate homogene', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (6,'diviser la pate en 2 et ajouter la poudre de cacao dans une partie et melanger delicatement', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (7,'verser dans un moule a cake la parti sans cacao ensuite la partie avec cacao et placer dans le four a 130 decre', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (8,'sortir du four apès 30 minutes', 2);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (1,'emincer oignon, pecil et aille, tomate et poivrons', 5);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (2,'casser les oeufs dans un saladier, ajouter les condument emincer et une pincer de sel', 5);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (3,'mettre la poelle sur le four et laisser chauffer', 5);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (4,'rajouter de l huile dans la poelle', 5);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (5,'melanger les oeufs et les conduments durant 30 secondes', 5);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (6,'verser les omelette dans la poelle et mettre un feu dou', 5);
-INSERT INTO Etape(NumeroEtape, DescriptionEtape, idRecette) VALUES (6,'apres une minute retourner les omelette afin de faire cuire le dessus. apres 1 autre minute server dans un plat. avec pour complement pain, excelent pour les tartines', 5);
-
-
-INSERT INTO IngredientRecette(Quantite,Mesure,idRecette, idIngredient) VALUES (4,null,2,21);
-INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (0,'300g',2,23);
-INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (0,'250g',2,22);
-INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (0,'200g',2,24);
-INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (1,'sachet de 8g',2, 26);
-INSERT INTO IngredientRecette(Quantite,Mesure ,idRecette, idIngredient) VALUES (2,'sachet de 30g', 2, 25);
-
------------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--------------------
-----------------------------pour consulter la table user de facon ordonner à adapter pour les autres.---------------------------
+----------------------------pour consulter la table UserF de facon ordonner à adapter pour les autres.---------------------------
 Declare
-TYPE T_REC_Utilisateur IS RECORD (
-OUT_id Utilisateur.IdUtilisateur%TYPE,
-OUT_Pseudo Utilisateur.Pseudo%TYPE,
-OUT_Email Utilisateur.Email%TYPE,
-OUT_passwords Utilisateur.passwords%TYPE,
-OUT_DateInscription Utilisateur.DateInscription%TYPE);
-TYPE TAB_T_REC_Utilisateur IS TABLE OF T_REC_Utilisateur index by binary_integer ;
-t_rec TAB_T_REC_Utilisateur ;
-i Utilisateur.IdUtilisateur%TYPE := 0;
+TYPE T_REC_UserF IS RECORD (
+OUT_id UserF.IdUserF%TYPE,
+OUT_Pseudo UserF.Pseudo%TYPE,
+OUT_Email UserF.Email%TYPE,
+OUT_password UserF.password%TYPE,
+OUT_DateInscription UserF.DateInscription%TYPE);
+TYPE TAB_T_REC_UserF IS TABLE OF T_REC_UserF index by binary_integer ;
+t_rec TAB_T_REC_UserF ;
+i UserF.IdUserF%TYPE := 0;
 BEGIN
- for cc in (SELECT IdUtilisateur,Pseudo,Email,passwords,DateInscription FROM Utilisateur) LOOP
+ for cc in (SELECT IdUserF,Pseudo,Email,password,DateInscription FROM UserF) LOOP
 i := i+1;
-t_rec(i).OUT_id := cc.IdUtilisateur;
+t_rec(i).OUT_id := cc.IdUserF;
 t_rec(i).OUT_Pseudo := cc.Pseudo;
 t_rec(i).OUT_Email := cc.Email;
-t_rec(i).OUT_passwords := cc.passwords;
+t_rec(i).OUT_password := cc.password;
 t_rec(i).OUT_DateInscription := cc.DateInscription;
 END LOOP;
 for i IN t_rec.first..t_rec.last loop
-    DBMS_OUTPUT.PUT_LINE('IdUtilisateur: '||t_rec(i).OUT_id||'  pseudo: '||t_rec(i).OUT_Pseudo||'  email: '||t_rec(i).OUT_Email||'  passwords: '||t_rec(i).OUT_passwords||'  DateInscription:  '||t_rec(i).OUT_DateInscription) ;
+    DBMS_OUTPUT.PUT_LINE('IdUserF: '||t_rec(i).OUT_id||'  pseudo: '||t_rec(i).OUT_Pseudo||'  email: '||t_rec(i).OUT_Email||'  password: '||t_rec(i).OUT_password||'  DateInscription:  '||t_rec(i).OUT_DateInscription) ;
    END LOOP;
 END;
-
-
 -----------------------------------//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--------------------
 
 --------- Script pour le programme ------------------
